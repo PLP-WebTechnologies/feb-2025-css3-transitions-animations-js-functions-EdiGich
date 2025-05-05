@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Card</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .rotate {
+            animation: spin 1s linear;
+        }
+
+
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ButtonRotateReverse {
+            animation: buttonReverse 1s linear;
+        }
+
+        @keyframes buttonReverse {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #fff;
+            padding-bottom: 100px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 20px;
+            border: none;
+            height: 10vh;
+            width: 10vh;
+            border-radius: 20vh;
+            background-color: #f0e9e9;
+            position: absolute;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #6e6dc7;
+            transform: translateY(-2px);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" id="animatedCard">
+        <h2>Interactive Card</h2>
+        <button class="ButtonSpin" id="spinButton"
+            onclick="triggerAnimation(), triggerButtonReverseAnimation()">Spin</button>
+        <select id="speedSelect" onchange="saveAnimationSpeed()">
+            <option value="1">Normal Speed (1s)</option>
+            <option value="0.5">Fast (0.5s)</option>
+            <option value="2">Slow (2s)</option>
+        </select>
+    </div>
+
+    <script>
+        // Retrieve saved animation speed from localStorage
+        const speedSelect = document.getElementById('speedSelect');
+        const savedSpeed = localStorage.getItem('animationSpeed');
+        if (savedSpeed) {
+            speedSelect.value = savedSpeed;
+        }
+
+        // save animation speed to localStorage
+        function saveAnimationSpeed() {
+            const speed = speedSelect.value;
+            localStorage.setItem('animationSpeed', speed);
+            updateAnimationSpeed(speed);
+        }
+
+        // The function to update the animation speed
+        function updateAnimationSpeed(speed) {
+            const card = document.getElementById('animatedCard');
+            card.style.animationDuration = `${speed}s`;
+        }
+
+        //function to trigger animation
+        function triggerAnimation() {
+            const card = document.getElementById('animatedCard');
+            card.classList.remove('rotate');
+            // force reflow to restart animation
+            void card.offsetWidth;
+            card.classList.add('rotate');
+        }
+
+        //function to make the button rotate in the 
+        //opposite direction so that I appears to remain still.
+        function triggerButtonReverseAnimation() {
+            const ButtonSpin = document.getElementById('spinButton');
+            button.classList.remove('ButtonRotateReverse');
+            void ButtonSpin.offsetWidth;
+            ButtonSpin.classList.add('ButtonRotateReverse');
+        }
+
+        // Apply saved animation speed when the page reloads
+        if (savedSpeed) {
+            updateAnimationSpeed(savedSpeed);
+        }
+    </script>
+</body>
+
+</html>
