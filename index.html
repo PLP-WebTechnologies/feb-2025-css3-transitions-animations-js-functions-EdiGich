@@ -37,8 +37,6 @@
             animation: spin 1s linear;
         }
 
-
-
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -103,8 +101,7 @@
 <body>
     <div class="card" id="animatedCard">
         <h2>Interactive Card</h2>
-        <button class="ButtonSpin" id="spinButton"
-            onclick="triggerAnimation(), triggerButtonReverseAnimation()">Spin</button>
+        <button class="ButtonSpin" id="spinButton" onclick="triggerAnimation()">Spin</button>
         <select id="speedSelect" onchange="saveAnimationSpeed()">
             <option value="1">Normal Speed (1s)</option>
             <option value="0.5">Fast (0.5s)</option>
@@ -113,7 +110,7 @@
     </div>
 
     <script>
-        // Retrieve saved animation speed from localStorage
+        //retrieve the saved animation speed from localStorage
         const speedSelect = document.getElementById('speedSelect');
         const savedSpeed = localStorage.getItem('animationSpeed');
         if (savedSpeed) {
@@ -127,28 +124,26 @@
             updateAnimationSpeed(speed);
         }
 
-        // The function to update the animation speed
+        // function to update the animation speed
         function updateAnimationSpeed(speed) {
             const card = document.getElementById('animatedCard');
+            const button = document.getElementById('spinButton');
             card.style.animationDuration = `${speed}s`;
+            button.style.animationDuration = `${speed}s`;
         }
 
-        //function to trigger animation
+        // Function to make the spin button spin in the opposite direction
+        // when clicked so that it appears to be stationary
         function triggerAnimation() {
             const card = document.getElementById('animatedCard');
+            const button = document.getElementById('spinButton');
             card.classList.remove('rotate');
-            // force reflow to restart animation
-            void card.offsetWidth;
-            card.classList.add('rotate');
-        }
-
-        //function to make the button rotate in the 
-        //opposite direction so that I appears to remain still.
-        function triggerButtonReverseAnimation() {
-            const ButtonSpin = document.getElementById('spinButton');
             button.classList.remove('ButtonRotateReverse');
-            void ButtonSpin.offsetWidth;
-            ButtonSpin.classList.add('ButtonRotateReverse');
+
+            void card.offsetWidth;
+            void button.offsetWidth;
+            card.classList.add('rotate');
+            button.classList.add('ButtonRotateReverse');
         }
 
         // Apply saved animation speed when the page reloads
